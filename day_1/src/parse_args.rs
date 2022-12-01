@@ -10,12 +10,12 @@ pub fn parse_args() -> Test<'static> {
     let args: Vec<String> = env::args().collect();
     let text = if args.len() > 2 {
         if args[2].eq("example") {
-            include_str!("./example.txt")
+            include_str!("../example.txt")
         } else {
             panic!("second argument can only be 'example'")
         }
     } else {
-        include_str!("./input.txt")
+        include_str!("../input.txt")
     };
     if args.len() < 2 {
         Test::Both(text)
