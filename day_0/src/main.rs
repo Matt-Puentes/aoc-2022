@@ -12,7 +12,7 @@ fn main() {
     println!("Running day 0");
     parse_args();
 }
-exa
+
 fn parse_args() {
     let args: Vec<String> = env::args().collect();
     let text = if args.len() > 2 && args[2].eq("example") {
