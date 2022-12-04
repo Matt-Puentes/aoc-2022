@@ -18,6 +18,8 @@ Vague personal rules:
 - Keep it functional when possible
 - Prioritize aesthetics
 
-
 I'm still learning rust, so the real goal is to just build competency in the
 language. All of the above rules can be broken at my discretion.
+
+Project structure inspired by [Tim Visee's excellent advent of code in 1 second
+repo](https://github.com/timvisee/advent-of-code-2020).
