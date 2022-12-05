@@ -6,25 +6,23 @@ use parse_args::{parse_args, Test};
 
 fn build_stacks(boxes: &str) -> Vec<Vec<char>> {
     let mut boxes = boxes.lines().rev();
+
     // build vector of stacks
     let mut stacks: Vec<Vec<char>> = vec![];
-    for c in boxes.next().unwrap().chars() {
-        if c != ' ' {
-            stacks.push(Vec::new());
-        }
+    for _ in 0..((boxes.next().unwrap().len() / 4) + 1) {
+        stacks.push(Vec::new());
     }
 
+    // Populate stacks
     for l in boxes {
         let mut chars = l.chars();
         for i in 0..stacks.len() {
-            chars.next();
-            match chars.next() {
-                Some(' ') => (),
-                Some(c) => stacks.get_mut(i).unwrap().push(c),
+            match (chars.next(), chars.next(), chars.next()) {
+                (_, Some(' '), _) => (),
+                (_, Some(c), _) => stacks.get_mut(i).unwrap().push(c),
                 _ => panic!("No char found"),
             }
-            chars.next();
-            // throw away space between lines
+            // throw away space between columns
             chars.next();
         }
     }
