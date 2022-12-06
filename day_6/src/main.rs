@@ -6,10 +6,10 @@ use parse_args::{parse_args, Test};
 
 fn solution(str_input: &str, win_size: usize) -> usize {
     for (idx, chars) in str_input.as_bytes().windows(win_size).enumerate() {
-        if chars
+        if !chars
             .iter()
             .enumerate()
-            .all(|(char_idx, c)| chars[char_idx + 1..].iter().all(|c2| c != c2))
+            .any(|(char_idx, c)| chars[char_idx + 1..].iter().any(|c2| c == c2))
         {
             return idx + win_size;
         }
