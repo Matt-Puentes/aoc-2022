@@ -1,29 +1,254 @@
-pub fn jobs() -> &'static [(fn(), &'static str)] {
+pub fn jobs() -> &'static [(fn(&str), &'static str, &'static str)] {
     &[
-        (day_1::main, "day_1"),
-        (day_2::main, "day_2"),
-        (day_3::main, "day_3"),
-        (day_4::main, "day_4"),
-        (day_5::main, "day_5"),
-        (day_6::main, "day_6"),
-        (day_7::main, "day_7"),
-        (day_8::main, "day_8"),
-        (day_9::main, "day_9"),
-        (day_10::main, "day_10"),
-        (day_11::main, "day_11"),
-        (day_12::main, "day_12"),
-        (day_13::main, "day_13"),
-        (day_14::main, "day_14"),
-        (day_15::main, "day_15"),
-        (day_16::main, "day_16"),
-        (day_17::main, "day_17"),
-        (day_18::main, "day_18"),
-        (day_19::main, "day_19"),
-        (day_20::main, "day_20"),
-        (day_21::main, "day_21"),
-        (day_22::main, "day_22"),
-        (day_23::main, "day_23"),
-        (day_24::main, "day_24"),
-        (day_25::main, "day_25"),
+        (
+            day_1::pt_1,
+            "day_1_pt1",
+            include_str!("../../day_1/input.txt"),
+        ),
+        (
+            day_1::pt_2,
+            "day_1_pt2",
+            include_str!("../../day_1/input.txt"),
+        ),
+        (
+            day_2::pt_1,
+            "day_2_pt1",
+            include_str!("../../day_2/input.txt"),
+        ),
+        (
+            day_2::pt_2,
+            "day_2_pt2",
+            include_str!("../../day_2/input.txt"),
+        ),
+        (
+            day_3::pt_1,
+            "day_3_pt1",
+            include_str!("../../day_3/input.txt"),
+        ),
+        (
+            day_3::pt_2,
+            "day_3_pt2",
+            include_str!("../../day_3/input.txt"),
+        ),
+        (
+            day_4::pt_1,
+            "day_4_pt1",
+            include_str!("../../day_4/input.txt"),
+        ),
+        (
+            day_4::pt_2,
+            "day_4_pt2",
+            include_str!("../../day_4/input.txt"),
+        ),
+        (
+            day_5::pt_1,
+            "day_5_pt1",
+            include_str!("../../day_5/input.txt"),
+        ),
+        (
+            day_5::pt_2,
+            "day_5_pt2",
+            include_str!("../../day_5/input.txt"),
+        ),
+        (
+            day_6::pt_1,
+            "day_6_pt1",
+            include_str!("../../day_6/input.txt"),
+        ),
+        (
+            day_6::pt_2,
+            "day_6_pt2",
+            include_str!("../../day_6/input.txt"),
+        ),
+        (
+            day_7::pt_1,
+            "day_7_pt1",
+            include_str!("../../day_7/input.txt"),
+        ),
+        (
+            day_7::pt_2,
+            "day_7_pt2",
+            include_str!("../../day_7/input.txt"),
+        ),
+        (
+            day_8::pt_1,
+            "day_8_pt1",
+            include_str!("../../day_8/input.txt"),
+        ),
+        (
+            day_8::pt_2,
+            "day_8_pt2",
+            include_str!("../../day_8/input.txt"),
+        ),
+        (
+            day_9::pt_1,
+            "day_9_pt1",
+            include_str!("../../day_9/input.txt"),
+        ),
+        (
+            day_9::pt_2,
+            "day_9_pt2",
+            include_str!("../../day_9/input.txt"),
+        ),
+        (
+            day_10::pt_1,
+            "day_10_pt1",
+            include_str!("../../day_10/input.txt"),
+        ),
+        (
+            day_10::pt_2,
+            "day_10_pt2",
+            include_str!("../../day_10/input.txt"),
+        ),
+        (
+            day_11::pt_1,
+            "day_11_pt1",
+            include_str!("../../day_11/input.txt"),
+        ),
+        (
+            day_11::pt_2,
+            "day_11_pt2",
+            include_str!("../../day_11/input.txt"),
+        ),
+        (
+            day_12::pt_1,
+            "day_12_pt1",
+            include_str!("../../day_12/input.txt"),
+        ),
+        (
+            day_12::pt_2,
+            "day_12_pt2",
+            include_str!("../../day_12/input.txt"),
+        ),
+        (
+            day_13::pt_1,
+            "day_13_pt1",
+            include_str!("../../day_13/input.txt"),
+        ),
+        (
+            day_13::pt_2,
+            "day_13_pt2",
+            include_str!("../../day_13/input.txt"),
+        ),
+        (
+            day_14::pt_1,
+            "day_14_pt1",
+            include_str!("../../day_14/input.txt"),
+        ),
+        (
+            day_14::pt_2,
+            "day_14_pt2",
+            include_str!("../../day_14/input.txt"),
+        ),
+        (
+            day_15::pt_1,
+            "day_15_pt1",
+            include_str!("../../day_15/input.txt"),
+        ),
+        (
+            day_15::pt_2,
+            "day_15_pt2",
+            include_str!("../../day_15/input.txt"),
+        ),
+        (
+            day_16::pt_1,
+            "day_16_pt1",
+            include_str!("../../day_16/input.txt"),
+        ),
+        (
+            day_16::pt_2,
+            "day_16_pt2",
+            include_str!("../../day_16/input.txt"),
+        ),
+        (
+            day_17::pt_1,
+            "day_17_pt1",
+            include_str!("../../day_17/input.txt"),
+        ),
+        (
+            day_17::pt_2,
+            "day_17_pt2",
+            include_str!("../../day_17/input.txt"),
+        ),
+        (
+            day_18::pt_1,
+            "day_18_pt1",
+            include_str!("../../day_18/input.txt"),
+        ),
+        (
+            day_18::pt_2,
+            "day_18_pt2",
+            include_str!("../../day_18/input.txt"),
+        ),
+        (
+            day_19::pt_1,
+            "day_19_pt1",
+            include_str!("../../day_19/input.txt"),
+        ),
+        (
+            day_19::pt_2,
+            "day_19_pt2",
+            include_str!("../../day_19/input.txt"),
+        ),
+        (
+            day_20::pt_1,
+            "day_20_pt1",
+            include_str!("../../day_20/input.txt"),
+        ),
+        (
+            day_20::pt_2,
+            "day_20_pt2",
+            include_str!("../../day_20/input.txt"),
+        ),
+        (
+            day_21::pt_1,
+            "day_21_pt1",
+            include_str!("../../day_21/input.txt"),
+        ),
+        (
+            day_21::pt_2,
+            "day_21_pt2",
+            include_str!("../../day_21/input.txt"),
+        ),
+        (
+            day_22::pt_1,
+            "day_22_pt1",
+            include_str!("../../day_22/input.txt"),
+        ),
+        (
+            day_22::pt_2,
+            "day_22_pt2",
+            include_str!("../../day_22/input.txt"),
+        ),
+        (
+            day_23::pt_1,
+            "day_23_pt1",
+            include_str!("../../day_23/input.txt"),
+        ),
+        (
+            day_23::pt_2,
+            "day_23_pt2",
+            include_str!("../../day_23/input.txt"),
+        ),
+        (
+            day_24::pt_1,
+            "day_24_pt1",
+            include_str!("../../day_24/input.txt"),
+        ),
+        (
+            day_24::pt_2,
+            "day_24_pt2",
+            include_str!("../../day_24/input.txt"),
+        ),
+        (
+            day_25::pt_1,
+            "day_25_pt1",
+            include_str!("../../day_25/input.txt"),
+        ),
+        (
+            day_25::pt_2,
+            "day_25_pt2",
+            include_str!("../../day_25/input.txt"),
+        ),
     ]
 }

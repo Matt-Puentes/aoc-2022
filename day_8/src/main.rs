@@ -1,11 +1,11 @@
 mod parse_args;
 use parse_args::{parse_args, Test};
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     println!("Part 1 result: {}", str_input.len().try_into().unwrap_or(0))
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     println!("Part 2 result: {}", str_input.len().try_into().unwrap_or(0))
 }
 

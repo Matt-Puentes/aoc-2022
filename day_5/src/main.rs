@@ -29,7 +29,7 @@ fn build_stacks(boxes: &str) -> Vec<Vec<char>> {
     stacks
 }
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     let (boxes, instructions) = str_input.split_once("\n\n").unwrap();
     let mut stacks = build_stacks(boxes);
     for instruction in instructions.lines() {
@@ -55,7 +55,7 @@ fn pt_1(str_input: &str) {
     )
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     let (boxes, instructions) = str_input.split_once("\n\n").unwrap();
     let mut stacks = build_stacks(boxes);
     for instruction in instructions.lines() {

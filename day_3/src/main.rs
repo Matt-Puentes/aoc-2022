@@ -8,7 +8,7 @@ fn ord(c: char) -> usize {
         .unwrap()
 }
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     println!(
         "Part 1 result: {:?}",
         str_input
@@ -33,7 +33,7 @@ fn pt_1(str_input: &str) {
     )
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     println!(
         "Part 2 result: {:?}",
         str_input

@@ -1,7 +1,7 @@
 mod parse_args;
 use parse_args::{parse_args, Test};
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     println!(
         "Part 1 result: {:?}",
         str_input
@@ -21,7 +21,7 @@ fn pt_1(str_input: &str) {
     )
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     println!(
         "Part 1 result: {:?}",
         str_input

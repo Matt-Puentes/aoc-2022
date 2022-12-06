@@ -1,7 +1,7 @@
 mod parse_args;
 use parse_args::{parse_args, Test};
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     let res: usize = str_input
         .split("\n\n") // Split into blocks
         .map(|s| s.lines().map(|s| s.trim().parse::<usize>().unwrap()).sum())
@@ -10,7 +10,7 @@ fn pt_1(str_input: &str) {
     println!("Part 1 result: {}", res)
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     let mut vec: Vec<usize> = str_input
         .split("\n\n") // Split into blocks
         .map(|s| s.lines().map(|s| s.trim().parse::<usize>().unwrap()).sum())

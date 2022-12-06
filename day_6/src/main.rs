@@ -17,12 +17,12 @@ fn solution(str_input: &str, win_size: usize) -> usize {
     0
 }
 
-fn pt_1(str_input: &str) {
+pub fn pt_1(str_input: &str) {
     // Origionally i did this solution with manual checking for duplicates c[0] != c[1] && c[0] != c[2] ... etc
     println!("Part 1 result: {}", solution(str_input, 4));
 }
 
-fn pt_2(str_input: &str) {
+pub fn pt_2(str_input: &str) {
     println!("Part 2 result: {}", solution(str_input, 14))
 }
 
