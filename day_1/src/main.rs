@@ -20,7 +20,7 @@ fn pt_2(str_input: &str) {
     println!("Part 2 result: {}", vec[0] + vec[1] + vec[2])
 }
 
-fn main() {
+pub fn main() {
     println!("Running day 1");
     match parse_args() {
         Test::One(text) => pt_1(text),

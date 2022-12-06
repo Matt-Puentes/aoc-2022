@@ -9,7 +9,7 @@ fn pt_2(str_input: &str) {
     println!("Part 2 result: {}", str_input.len().try_into().unwrap_or(0))
 }
 
-fn main() {
+pub fn main() {
     println!("Running day 7");
     match parse_args() {
         Test::One(text) => pt_1(text),

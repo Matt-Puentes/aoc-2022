@@ -31,7 +31,7 @@ fn pt_2(str_input: &str) {
     println!("Part 2 result: {:?}", res)
 }
 
-fn main() {
+pub fn main() {
     println!("Running day 2");
     match parse_args() {
         Test::One(text) => pt_1(text),

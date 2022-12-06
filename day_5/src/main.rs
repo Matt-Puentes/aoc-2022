@@ -78,7 +78,7 @@ fn pt_2(str_input: &str) {
     )
 }
 
-fn main() {
+pub fn main() {
     println!("Running day 5");
     match parse_args() {
         Test::One(text) => pt_1(text),

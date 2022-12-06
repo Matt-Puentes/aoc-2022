@@ -10,7 +10,7 @@ fn pt_2(str_input: &str) {
 }
 
 pub fn main() {
-    println!("Running day 8");
+    println!("Running day 13");
     match parse_args() {
         Test::One(text) => pt_1(text),
         Test::Two(text) => pt_2(text),
