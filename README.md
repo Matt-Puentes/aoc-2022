@@ -23,3 +23,13 @@ language. All of the above rules can be broken at my discretion.
 
 Project structure inspired by [Tim Visee's excellent advent of code in 1 second
 repo](https://github.com/timvisee/advent-of-code-2020).
+
+
+## Day 6 optimizations
+I first did day 6 with iteration, but (as a python dev) avoiding hashmaps was
+eating at me. I decided to do a hashmap implementation, which looked a lot
+nicer! And since I wasn't even necessarily fully populating the hashmap, i
+decided to run a benchmark to see just how much slower it was. It couldn't be
+that bad, right?
+![Day 6 graphed results]("./doc/day_6_graph.png")
+Yikes. I guess I'll avoid hashmaps!
