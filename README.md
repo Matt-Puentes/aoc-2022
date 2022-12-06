@@ -31,5 +31,5 @@ eating at me. I decided to do a hashmap implementation, which looked a lot
 nicer! And since I wasn't even necessarily fully populating the hashmap, i
 decided to run a benchmark to see just how much slower it was. It couldn't be
 that bad, right?
-![Day 6 graphed results]("doc/day_6_graph.png")
+![Day 6 graphed results](doc/day_6_graph.png)
 Yikes. I guess I'll avoid hashmaps!
