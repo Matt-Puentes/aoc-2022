@@ -27,7 +27,7 @@ pub fn pt_1(str_input: &str) {
         // Keeping track of the highest so far this row
         let mut highest = '0' as usize - 1;
         // Keeping track of the tree size order from the left
-        let mut talltreestack: Vec<(usize, usize)> = Vec::new(); //index, height
+        let mut left_stack: Vec<(usize, usize)> = Vec::new(); //index, height
 
         for (ci, c) in l.chars().enumerate() {
             // println!("char: {}, as usize: {} ", c, c as usize);
@@ -44,20 +44,21 @@ pub fn pt_1(str_input: &str) {
             // Check left -> right visibility
             loop {
                 // check the tree stack
-                match talltreestack.pop() {
+                match left_stack.pop() {
                     Some(t) => {
                         if (c as usize) < t.1 {
-                            talltreestack.push(t);
-                            talltreestack.push((ci, c as usize));
+                            left_stack.push(t);
+                            left_stack.push((ci, c as usize));
                             break;
                         }
                     }
                     None => {
-                        talltreestack.push((ci, c as usize));
+                        left_stack.push((ci, c as usize));
                         break;
                     }
                 }
             }
+            // Check down -> up visibility
             loop {
                 // check the tree stack
                 match down_stacks[ci].pop() {
@@ -75,7 +76,7 @@ pub fn pt_1(str_input: &str) {
                 }
             }
         }
-        for (ti, _) in talltreestack {
+        for (ti, _) in left_stack {
             is_visible[ri][ti] = true;
         }
     }
