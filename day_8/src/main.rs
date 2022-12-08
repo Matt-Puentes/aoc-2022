@@ -5,11 +5,11 @@ pub fn pt_1(str_input: &str) {
     let rows = str_input.lines().count();
     let cols = str_input.lines().next().unwrap().len();
 
-    // Store visibility in matrix
+    // Store visibility in matrix, prevent double-counting.
     let mut is_visible = vec![vec![false; cols]; rows];
 
     // For right/top visibility, we're already iterating over the strings in those directions, so just keep track of the
-    //  highest tree so far, and if it's taller than it's visible.
+    //  highest tree so far, and if it's taller then it's visible.
 
     // For left/down visibility, we need to keep track of what is visible while iterating and tally it at the end.
     //  If we use a stack, we can push trees on when we find them and pop them off if a taller tree comes along
