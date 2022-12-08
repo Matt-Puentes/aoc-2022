@@ -22,10 +22,9 @@ pub fn construct_dirs(str_input: &str) -> Vec<usize> {
 
     for cmd in str_input.lines() {
         match cmd.split(" ").collect::<Vec<_>>()[..] {
+            ["$", "ls"] => { /* lmao */ }
             ["$", "cd", "/"] => cursor = 0,
-            ["$", "cd", ".."] => {
-                cursor = nodes[cursor].parent.expect("Node does not have parent");
-            }
+            ["$", "cd", ".."] => cursor = nodes[cursor].parent.expect("Node does not have parent"),
             ["$", "cd", dir] => {
                 cursor = *nodes[cursor]
                     .children
@@ -33,7 +32,6 @@ pub fn construct_dirs(str_input: &str) -> Vec<usize> {
                     .find(|c| nodes[**c].name == dir)
                     .expect(format!("No child {} found for node {:?}", dir, cursor).as_str())
             }
-            ["$", "ls"] => {}
             ["dir", name] => {
                 let new_idx = nodes.len();
                 nodes.push(Node {
@@ -44,9 +42,7 @@ pub fn construct_dirs(str_input: &str) -> Vec<usize> {
                 });
                 nodes[cursor].children.push(new_idx);
             }
-            [num, _] => {
-                nodes[cursor].file_size += num.parse::<usize>().unwrap();
-            }
+            [num, _] => nodes[cursor].file_size += num.parse::<usize>().unwrap(),
             _ => panic!("Bad line {}", cmd),
         }
     }
