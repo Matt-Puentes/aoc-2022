@@ -1,12 +1,34 @@
-mod parse_args;
-use parse_args::{parse_args, Test};
+use std::env;
+mod solutions;
+use solutions::{pt_1, pt_2};
 
-pub fn pt_1(str_input: &str) {
-    println!("Part 1 result: {}", str_input.len().try_into().unwrap_or(0))
+pub enum Test<'a> {
+    One(&'a str),
+    Two(&'a str),
+    Both(&'a str),
 }
 
-pub fn pt_2(str_input: &str) {
-    println!("Part 2 result: {}", str_input.len().try_into().unwrap_or(0))
+pub fn parse_args() -> Test<'static> {
+    let args: Vec<String> = env::args().collect();
+    let text = if args.len() > 2 {
+        if args[2].eq("example") {
+            include_str!("../example.txt")
+        } else {
+            panic!("second argument can only be 'example'")
+        }
+    } else {
+        include_str!("../input.txt")
+    };
+    if args.len() < 2 {
+        Test::Both(text)
+    } else {
+        match &args[1].parse() {
+            Ok(1) => Test::One(text),
+            Ok(2) => Test::Two(text),
+            Ok(0) => Test::Both(text),
+            _ => panic!("invalid test number"),
+        }
+    }
 }
 
 pub fn main() {
