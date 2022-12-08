@@ -1,24 +1,21 @@
 use std::vec;
 mod parse_args;
 use parse_args::{parse_args, Test};
-#[derive(Debug, PartialEq)]
-enum Data {
-    Dir(String),
-    File(usize),
-}
 
 #[derive(Debug)]
 struct Node {
-    data: Data,
-    children: Vec<usize>,
+    name: String,
+    file_size: usize,
     parent: Option<usize>,
+    children: Vec<usize>,
 }
 
 pub fn construct_dirs(str_input: &str) -> Vec<usize> {
     // use an "Arena" to store nodes by index. This way they can be mutated while we traverse the tree.
     let mut nodes: Vec<Node> = vec![Node {
-        data: Data::Dir("/".to_string()),
-        children: Vec::new(),
+        name: "/".to_string(),
+        file_size: 0,
+        children: vec![],
         parent: None,
     }];
     let mut cursor = 0;
@@ -33,30 +30,22 @@ pub fn construct_dirs(str_input: &str) -> Vec<usize> {
                 cursor = *nodes[cursor]
                     .children
                     .iter()
-                    .find(|c| match &nodes[**c].data {
-                        Data::Dir(d) => d == dir,
-                        _ => false,
-                    })
-                    .expect(format!("No child {} found for node {:?}", dir, cursor).as_str());
+                    .find(|c| nodes[**c].name == dir)
+                    .expect(format!("No child {} found for node {:?}", dir, cursor).as_str())
             }
             ["$", "ls"] => {}
             ["dir", name] => {
                 let new_idx = nodes.len();
                 nodes.push(Node {
-                    data: Data::Dir(name.to_string()),
-                    children: Vec::new(),
+                    name: name.to_string(),
+                    children: vec![],
+                    file_size: 0,
                     parent: Some(cursor),
                 });
                 nodes[cursor].children.push(new_idx);
             }
             [num, _] => {
-                let new_idx = nodes.len();
-                nodes.push(Node {
-                    data: Data::File(num.parse().unwrap()),
-                    children: Vec::new(),
-                    parent: Some(cursor),
-                });
-                nodes[cursor].children.push(new_idx);
+                nodes[cursor].file_size += num.parse::<usize>().unwrap();
             }
             _ => panic!("Bad line {}", cmd),
         }
@@ -64,27 +53,22 @@ pub fn construct_dirs(str_input: &str) -> Vec<usize> {
 
     // This is an inefficient way of tallying dirs, because we recompute every directory every time.
     fn get_dir_size(nodes: &Vec<Node>, dir: &Node) -> usize {
-        dir.children
-            .iter()
-            .map(|c| match &nodes[*c].data {
-                Data::File(s) => *s,
-                Data::Dir(_) => get_dir_size(nodes, &nodes[*c]),
-            })
-            .sum()
+        dir.file_size
+            + dir
+                .children
+                .iter()
+                .map(|s| get_dir_size(nodes, &nodes[*s]))
+                .sum::<usize>()
     }
 
     nodes
         .iter()
-        .filter_map(|s| match s.data {
-            Data::File(_) => None,
-            Data::Dir(_) => Some(get_dir_size(&nodes, s)),
-        })
+        .map(|s| get_dir_size(&nodes, s))
         .collect::<Vec<_>>()
 }
 
 pub fn pt_1(str_input: &str) {
     let dir_sizes = construct_dirs(str_input);
-
     println!(
         "Part 1 result: {:?}",
         dir_sizes.iter().filter(|&&s| s < 100000).sum::<usize>()
