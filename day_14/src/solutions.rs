@@ -5,6 +5,8 @@ enum Line {
     Vert(usize, (usize, usize)),
 }
 
+// I guessss I could just make a really big World (1k x 5k or something) and fill the array in only one pass. That would
+//  probably also be faster. But I prefer Generic solutions, and it's only 2 iterations to do it this way.
 fn build_world(str_input: &str, pt2: bool) -> (Vec<Vec<char>>, (usize, usize)) {
     // y min is always 0
     let mut max_row = 0; // if the sand hits this, sim is over
@@ -117,6 +119,8 @@ pub fn pt_2(str_input: &str) {
             world[next_pos.0][next_pos.1] = 'o';
 
             let dy = next_pos.0 + 1;
+
+            // If the sand already reached the floor, don't bother checking the points below
             if dy == height_limit {
                 continue;
             }
