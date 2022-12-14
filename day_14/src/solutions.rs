@@ -1,88 +1,99 @@
-use std::collections::HashSet;
-// use std::{thread, time};
+enum Line {
+    Horiz((usize, usize), usize),
+    Vert(usize, (usize, usize)),
+}
 
-// fn print_map(map: &HashSet<(u16, u16)>, sandpos: &(u16, u16)) {
-//     let mut dims = (600, 0, 0, 0); // min x, min y, max x, max y
-//     for p in map {
-//         if p.0 < dims.0 {
-//             dims.0 = p.0
-//         }
-//         if p.0 > dims.2 {
-//             dims.2 = p.0
-//         }
-//         if p.1 > dims.3 {
-//             dims.3 = p.1
-//         }
-//     }
-//     // println!("Corners: bottomright: {:?}", dims);
-//     for y in dims.1..(dims.3 + 1) {
-//         for x in dims.0..(dims.2 + 1) {
-//             if (x, y) == *sandpos {
-//                 print!("+");
-//             } else if map.contains(&(x, y)) {
-//                 print!("#");
-//             } else {
-//                 print!(".");
-//             }
-//         }
-//         print!("\n");
-//     }
-// }
+fn build_world(str_input: &str, pt2: bool) -> (Vec<Vec<char>>, (usize, usize)) {
+    // y min is always 0
+    let mut max_row = 0; // if the sand hits this, sim is over
+    let mut min_col = 1000; // So we can shift the coord system over
+    let mut max_col = 0; // So we know the width of the world
 
-fn read_map(str_input: &str) -> (HashSet<(u16, u16)>, u16) {
-    let mut map: HashSet<(_, _)> = HashSet::new();
-    let mut height_limit = 0; // if the sand hits this, sim is over
+    // Construct lines while determining bounds of world
+    let mut lines: Vec<Line> = vec![];
     for l in str_input.lines() {
         let mut prevpoint: Option<(_, _)> = None;
         for p in l.split(" -> ") {
             let (xs, ys) = p.split_once(',').unwrap();
-            let x = xs.parse::<u16>().unwrap();
-            let y = ys.parse::<u16>().unwrap();
+            let x = xs.parse::<usize>().unwrap();
+            let y = ys.parse::<usize>().unwrap();
 
-            if y > height_limit {
-                height_limit = y
+            if y > max_row {
+                max_row = y
             }
-
+            if x < min_col {
+                min_col = x
+            }
+            if x > max_col {
+                max_col = x
+            }
             if let Some((px, py)) = prevpoint.take() {
-                let (fromy, toy) = (y.min(py), y.max(py) + 1);
-                let (fromx, tox) = (x.min(px), x.max(px) + 1);
-
-                for dy in fromy..toy {
-                    map.insert((x, dy));
-                }
-                for dx in fromx..tox {
-                    map.insert((dx, y));
+                if px == x {
+                    lines.push(Line::Vert(x, (y.min(py), y.max(py))));
+                } else if py == y {
+                    lines.push(Line::Horiz((x.min(px), x.max(px)), y));
+                } else {
+                    panic!("Diagonal Line ({:?}, {:?}) detected", (x, y), (px, py))
                 }
             }
             prevpoint = Some((x, y));
         }
     }
-    (map, height_limit)
+
+    if pt2 {
+        // Give room for the "floor"
+        max_row += 2;
+        // give a LOT of extra room for sand to pile up
+        min_col -= max_row;
+        max_col += max_row;
+    } else {
+        // Give room for sand to fall off
+        min_col -= 1;
+        max_col += 1;
+    }
+
+    // Fill world space with "air" ('.')
+    let mut world = vec![vec!['.'; max_col - min_col + 1]; max_row + 1];
+
+    // For each Line, draw walls into world
+    for line in lines {
+        match line {
+            Line::Vert(x, (s, e)) => {
+                for y in s..=e {
+                    world[y][x - min_col] = '#';
+                }
+            }
+            Line::Horiz((s, e), y) => {
+                for x in s..=e {
+                    world[y][x - min_col] = '#';
+                }
+            }
+        }
+    }
+
+    (world, (max_row, min_col))
 }
 
 pub fn pt_1(str_input: &str) {
-    let (mut map, height_limit) = read_map(str_input);
-
+    let (mut world, (height_limit, min_col)) = build_world(str_input, false);
     let mut c = 0;
     'sandSpawn: loop {
-        let mut sand_pos = (500, 0);
+        let mut sand_pos = (0, 500 - min_col);
         'sandFall: loop {
-            let new_pos = (sand_pos.0, sand_pos.1 + 1);
-            if !map.contains(&new_pos) {
-                sand_pos = new_pos;
-            } else if !map.contains(&(new_pos.0 - 1, new_pos.1)) {
-                sand_pos = (new_pos.0 - 1, new_pos.1);
-            } else if !map.contains(&(new_pos.0 + 1, new_pos.1)) {
-                sand_pos = (new_pos.0 + 1, new_pos.1);
-            } else {
-                // sand has come to rest
-                c += 1;
-                map.insert(sand_pos);
-                break 'sandFall;
-            }
-            if sand_pos.1 >= height_limit {
-                println!("HEIGHT LIMIT REACHED");
+            let new_pos = (sand_pos.0 + 1, sand_pos.1);
+            if sand_pos.0 >= height_limit {
                 break 'sandSpawn;
+            }
+            if world[new_pos.0][new_pos.1] == '.' {
+                sand_pos = new_pos;
+            } else if world[new_pos.0][new_pos.1 - 1] == '.' {
+                sand_pos = (new_pos.0, new_pos.1 - 1);
+            } else if world[new_pos.0][new_pos.1 + 1] == '.' {
+                sand_pos = (new_pos.0, new_pos.1 + 1);
+            } else {
+                c += 1;
+                world[sand_pos.0][sand_pos.1] = 'o';
+                break 'sandFall;
             }
         }
     }
@@ -90,46 +101,28 @@ pub fn pt_1(str_input: &str) {
 }
 
 pub fn pt_2(str_input: &str) {
-    let (mut map, height_limit) = read_map(str_input);
-
+    let (mut world, (height_limit, min_col)) = build_world(str_input, true);
     let mut c = 0;
-    // let mut sand_trail = vec![];
-    let start_sand_from = (500, 0);
     'sandSpawn: loop {
-        let mut sand_pos = start_sand_from;
+        let mut sand_pos = (0, 500 - min_col);
         'sandFall: loop {
-            let new_pos = (sand_pos.0, sand_pos.1 + 1);
-            // if map.contains(&sand_pos) {
-            //     if let Some(safe_pos) = sand_trail.pop() {
-            //         start_sand_from = safe_pos;
-            //         continue 'sandFall;
-            //     } else {
-            //         println!("Out of safe positions to return to! exiting loop.");
-            //         break 'sandSpawn;
-            //     }
-            // }
-
+            let new_pos = (sand_pos.0 + 1, sand_pos.1);
             // The sand has hit the floor
-            if new_pos.1 == height_limit + 2 {
+            if new_pos.0 == height_limit {
                 c += 1;
-                map.insert(sand_pos);
+                world[sand_pos.0][sand_pos.1] = 'o';
                 break 'sandFall;
             }
-
-            // Check sand pos
-            if !map.contains(&new_pos) {
-                // sand_trail.push(sand_pos);
+            if world[new_pos.0][new_pos.1] == '.' {
                 sand_pos = new_pos;
-            } else if !map.contains(&(new_pos.0 - 1, new_pos.1)) {
-                // sand_trail.push(sand_pos);
-                sand_pos = (new_pos.0 - 1, new_pos.1);
-            } else if !map.contains(&(new_pos.0 + 1, new_pos.1)) {
-                // sand_trail.push(sand_pos);
-                sand_pos = (new_pos.0 + 1, new_pos.1);
+            } else if world[new_pos.0][new_pos.1 - 1] == '.' {
+                sand_pos = (new_pos.0, new_pos.1 - 1);
+            } else if world[new_pos.0][new_pos.1 + 1] == '.' {
+                sand_pos = (new_pos.0, new_pos.1 + 1);
             } else {
                 c += 1;
-                map.insert(sand_pos);
-                if sand_pos == (500, 0) {
+                world[sand_pos.0][sand_pos.1] = 'o';
+                if sand_pos == (0, 500 - min_col) {
                     break 'sandSpawn;
                 } else {
                     break 'sandFall;
@@ -137,5 +130,6 @@ pub fn pt_2(str_input: &str) {
             }
         }
     }
+
     println!("Part 2 result: {}", c)
 }
